@@ -389,7 +389,7 @@ vote
 query = create_query(df_query_2)
 token = query.get('token')
 data0 = get_query_results(token) 
-df_delegator_vote_distribution = pd.DataFrame(data0['results'], columns = ['validator_cote', 'delegator_vote','num_voters','total_amount'])    
+df_delegator_vote_distribution = pd.DataFrame(data0['results'], columns = ['validator_vote', 'delegator_vote','num_voters','total_amount'])    
 
 st.dataframe(df_delegator_vote_distribution) 
 
@@ -397,7 +397,7 @@ st.dataframe(df_delegator_vote_distribution)
 
 
 st.text("")
-st.markdown("Next, use the select box below to see insights for your favorite validator:")
+st.markdown("The way to read the table above is as follows. For the selected proposal ID and validator, we see first the validator vote, followed by the number of its delegators who voted for any proposal, if they voted, and the amount they account for of that specific delegator.")
 st.text("")
 
   
@@ -538,10 +538,32 @@ else:
 
 
     fig = px.bar(df_delegator_reledlegations_from_2, x='redelegated_from_label', y='total_amount', color='validator_redelegated_from_vote', hover_data = ['total_amount'])
+    fig.update_layout(
+    title="Selected proposal and validator - Vote choice and amount redelegated from other validators",
+    xaxis_title="Validator redelegated from",
+    yaxis_title="Amount (OSMO)",
+    legend_title="Validator choice",
+    font=dict(
+        family="Courier New, monospace",
+        size=18,
+        color="RebeccaPurple"
+    )
+    )
     st.plotly_chart(fig, use_container_width=True)  
 
 
     fig = px.bar(df_delegator_reledlegations_from_3, x='redelegated_from_label', y='total_amount', color='vote', hover_data = ['total_amount'])
+    fig.update_layout(
+    title="Selected proposal and validator - Vote choice and amount redelegated from other validators - Redelegator voting choice",
+    xaxis_title="Validator redelegated from",
+    yaxis_title="Amount (OSMO)",
+    legend_title="Redelegator choice",
+    font=dict(
+        family="Courier New, monospace",
+        size=18,
+        color="RebeccaPurple"
+    )
+    )
     st.plotly_chart(fig, use_container_width=True)  
 
     st.dataframe(df_delegator_reledlegations_from) 
@@ -682,8 +704,30 @@ else:
     df_delegator_reledlegations_to_3 = df_delegator_reledlegations_to.groupby(by=['redelegated_to_label','vote']).sum().reset_index(drop=False)
 
     fig = px.bar(df_delegator_reledlegations_to_2, x='redelegated_to_label', y='total_amount', color='validator_redelegated_to_vote', hover_data = ['total_amount'])
+    fig.update_layout(
+    title="Selected proposal and validator - Vote choice and amount redelegated to other validators - Destination validator voting choice",
+    xaxis_title="Validator redelegated from",
+    yaxis_title="Amount (OSMO)",
+    legend_title="Destination validator choice",
+    font=dict(
+        family="Courier New, monospace",
+        size=18,
+        color="RebeccaPurple"
+    )
+    )
     st.plotly_chart(fig, use_container_width=True)  
     fig = px.bar(df_delegator_reledlegations_to_3, x='redelegated_to_label', y='total_amount', color='vote', hover_data = ['total_amount'])
+    fig.update_layout(
+    title="Selected proposal and validator - Vote choice and amount redelegated to other validators - Redelegator voting choice",
+    xaxis_title="Validator redelegated from",
+    yaxis_title="Amount (OSMO)",
+    legend_title="Redelegator choice",
+    font=dict(
+        family="Courier New, monospace",
+        size=18,
+        color="RebeccaPurple"
+    )
+    )
     st.plotly_chart(fig, use_container_width=True)  
 
     st.dataframe(df_delegator_reledlegations_to) 
