@@ -1,73 +1,13 @@
 # -*- coding: utf-8 -*-
-"""
-Created on Tue Aug 16 00:42:24 2022
-@author: Jordi Garcia Ruspira
-"""
-import streamlit as st
-import pandas as pd
-import requests
-import json
-import time
-import plotly.graph_objects as go
-import random
-import plotly.io as pio 
-import plotly.express as px
-import plotly.graph_objects as go
-import datetime as dt 
-import matplotlib.pyplot as plt
-import numpy as np
-from plotly.subplots import make_subplots
-from PIL import Image 
-import datetime 
-import plotly.graph_objs as go
-
-import plotly.graph_objects as go
-
-import networkx as nx
-
 
 import streamlit as st
 import pandas as pd
 import requests
 import json
-import time
-import plotly.graph_objects as go
-import random
+import time 
 import plotly.io as pio 
-import plotly.express as px
-import plotly.graph_objects as go
-import datetime as dt 
-import matplotlib.pyplot as plt
-import numpy as np
-from shroomdk import ShroomDK
-from plotly.subplots import make_subplots
-from PIL import Image 
-import datetime  
-
-import plotly.graph_objs as go
-
-import plotly.graph_objects as go
-
-import streamlit as st
-import pandas as pd
-import requests
-import json
-import time
-import plotly.graph_objects as go
-import random
-import plotly.io as pio 
-import plotly.express as px
-import plotly.graph_objects as go
-import datetime as dt 
-import matplotlib.pyplot as plt
-import numpy as np
-from plotly.subplots import make_subplots
-from PIL import Image 
-import datetime 
-import plotly.graph_objs as go
+import plotly.express as px  
 import base64
-
-import plotly.graph_objects as go
 
 
 st.set_page_config(
