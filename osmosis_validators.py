@@ -184,7 +184,7 @@ val_votes_aux as
  and tx_succeeded = 'TRUE'
  )
 
-select voter, b.address, proposal_id, description, label, b.rank from val_votes_aux a
+select voter, b.address, proposal_id, description, label, b.rank, 1 as value from val_votes_aux a
 left join validators_address b 
 on a.voter = b.account_address
 where a.rank = 1 
@@ -202,10 +202,10 @@ st.text("")
 query = create_query(df_query_1)
 token = query.get('token')
 data0 = get_query_results(token) 
-df_valvote = pd.DataFrame(data0['results'], columns = ['voter','address','proposal_id','description','label','rank'])  
+df_valvote = pd.DataFrame(data0['results'], columns = ['voter','address','proposal_id','description','label','rank','value'])  
 df_valvote = df_valvote.sort_values(by ='rank', ascending = True)
 
-fig = px.bar(df_valvote, x='label', y='rank', color='description', hover_data = ['description'])
+fig = px.bar(df_valvote, x='label', y='value', color='description', hover_data = ['description'])
 
 st.plotly_chart(fig, use_container_width=True)  
     
