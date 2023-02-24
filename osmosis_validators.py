@@ -542,12 +542,7 @@ else:
     title="Selected proposal and validator - Vote choice and amount redelegated from other validators",
     xaxis_title="Validator redelegated from",
     yaxis_title="Amount (OSMO)",
-    legend_title="Validator choice",
-    font=dict(
-        family="Courier New, monospace",
-        size=18,
-        color="RebeccaPurple"
-    )
+    legend_title="Validator choice"
     )
     st.plotly_chart(fig, use_container_width=True)  
 
@@ -557,12 +552,7 @@ else:
     title="Selected proposal and validator - Vote choice and amount redelegated from other validators - Redelegator voting choice",
     xaxis_title="Validator redelegated from",
     yaxis_title="Amount (OSMO)",
-    legend_title="Redelegator choice",
-    font=dict(
-        family="Courier New, monospace",
-        size=18,
-        color="RebeccaPurple"
-    )
+    legend_title="Redelegator choice"
     )
     st.plotly_chart(fig, use_container_width=True)  
 
@@ -708,12 +698,7 @@ else:
     title="Selected proposal and validator - Vote choice and amount redelegated to other validators - Destination validator voting choice",
     xaxis_title="Validator redelegated from",
     yaxis_title="Amount (OSMO)",
-    legend_title="Destination validator choice",
-    font=dict(
-        family="Courier New, monospace",
-        size=18,
-        color="RebeccaPurple"
-    )
+    legend_title="Destination validator choice"
     )
     st.plotly_chart(fig, use_container_width=True)  
     fig = px.bar(df_delegator_reledlegations_to_3, x='redelegated_to_label', y='total_amount', color='vote', hover_data = ['total_amount'])
@@ -721,12 +706,7 @@ else:
     title="Selected proposal and validator - Vote choice and amount redelegated to other validators - Redelegator voting choice",
     xaxis_title="Validator redelegated from",
     yaxis_title="Amount (OSMO)",
-    legend_title="Redelegator choice",
-    font=dict(
-        family="Courier New, monospace",
-        size=18,
-        color="RebeccaPurple"
-    )
+    legend_title="Redelegator choice"
     )
     st.plotly_chart(fig, use_container_width=True)  
 
