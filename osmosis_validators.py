@@ -132,8 +132,8 @@ st.header("")
 st.subheader("Introduction - Overview")
 
 st.text("")
-st.success("How to use this tool: you can select a proposal ID on Osmosis and a Validator, and it will give you insights on how delegators behaved after the proposal.")
-st.success("When you select a proposal ID, the numbers displayed show movement between the go live of the proposal and 7 days after the ending of the vote.")
+st.markdown("How to use this tool: you can select a proposal ID on Osmosis and a Validator, and it will give you insights on how delegators behaved after the proposal.")
+st.markdown("When you select a proposal ID, the numbers displayed show movement between the go live of the proposal and 7 days after the ending of the vote.")
 st.text("")
 st.text("")
 st.markdown("Start by selecting a proposal ID:")
@@ -399,8 +399,11 @@ st.dataframe(df_delegator_vote_distribution)
 st.text("")
 st.markdown("The way to read the table above is as follows. For the selected proposal ID and validator, we see first the validator vote, followed by the number of its delegators who voted for any proposal, if they voted, and the amount they account for of that specific delegator.")
 st.text("")
-
-  
+st.text("")
+st.subheader("Redelegations from the selected validator")
+st.text("")
+st.markdown("We can display how users behaved. For instance, we can first look at how many redelegations there were from the selected validator towards other validators, and what option did those validators vote.")
+st.text("")  
 
 df_query_3 = df_query_aux2 + str(proposal_choice) +"""'
 group by proposal_id
@@ -545,7 +548,10 @@ else:
     legend_title="Validator choice"
     )
     st.plotly_chart(fig, use_container_width=True)  
-
+    st.text("")
+    st.text("")
+    st.markdown("Appart from this, we can also display how individual delegators who redelegated to the validators displayed above voted. Thus, the following chart displays the same numbers as the chart above, but differenciating by delegators votes. This will allow any validator using this dashboard to see whether they believe their voting option influenced somehow their delegators or if the reason for redelegations seems to be a different one. ")
+    st.text("") 
 
     fig = px.bar(df_delegator_reledlegations_from_3, x='redelegated_from_label', y='total_amount', color='vote', hover_data = ['total_amount'])
     fig.update_layout(
@@ -555,7 +561,11 @@ else:
     legend_title="Redelegator choice"
     )
     st.plotly_chart(fig, use_container_width=True)  
-
+    st.text("")
+    st.text("")
+    st.markdown("Below I have also displayed the individual values which account for the previous charts, in case any further analysis is desired.")
+    st.text("")
+    st.text("")
     st.dataframe(df_delegator_reledlegations_from) 
 
 
@@ -678,7 +688,6 @@ validator_redelegated_to_vote
 select * from all_votes_per_proposal_and_validator"""
 
 
-
 query = create_query(df_query_4)
 token = query.get('token')
 data0 = get_query_results(token) 
@@ -692,7 +701,13 @@ else:
     
     df_delegator_reledlegations_to_2 = df_delegator_reledlegations_to.groupby(by=['redelegated_to_label','validator_redelegated_to_vote']).sum().reset_index(drop=False)
     df_delegator_reledlegations_to_3 = df_delegator_reledlegations_to.groupby(by=['redelegated_to_label','vote']).sum().reset_index(drop=False)
-
+    
+    st.text("")
+    st.text("")
+    st.subheader("Redelegations to the selected validator")
+    st.text("")
+    st.markdown("We previously showed how users redelegating from the selected validator behaved. Now we can do the same exercise but the other way around. We can see how votes coming from other validators to the selected one behave, and see if it is coherent with the previous result.")
+    st.text("")  
     fig = px.bar(df_delegator_reledlegations_to_2, x='redelegated_to_label', y='total_amount', color='validator_redelegated_to_vote', hover_data = ['total_amount'])
     fig.update_layout(
     title="Selected proposal and validator - Vote choice and amount redelegated to other validators - Destination validator voting choice",
@@ -701,6 +716,10 @@ else:
     legend_title="Destination validator choice"
     )
     st.plotly_chart(fig, use_container_width=True)  
+    st.text("")
+    st.text("")
+    st.markdown("As we did before, we can also display how individual delegators who redelegated to the selected validator voted. Thus, the following chart displays the same numbers as the chart above, but differenciating by delegators votes.")
+    st.text("") 
     fig = px.bar(df_delegator_reledlegations_to_3, x='redelegated_to_label', y='total_amount', color='vote', hover_data = ['total_amount'])
     fig.update_layout(
     title="Selected proposal and validator - Vote choice and amount redelegated to other validators - Redelegator voting choice",
@@ -709,7 +728,11 @@ else:
     legend_title="Redelegator choice"
     )
     st.plotly_chart(fig, use_container_width=True)  
-
+    st.text("")
+    st.text("")
+    st.markdown("As in the previous section, I have also displayed the individual values which account for the previous charts, in case any further analysis is desired.")
+    st.text("")
+    st.text("")
     st.dataframe(df_delegator_reledlegations_to) 
 
 
