@@ -10,4 +10,3 @@ streamlit_pandas_profiling==0.1.3
 streamlit-aggrid
 streamlit_autorefresh
 streamlit-nightly
-shroomdk
