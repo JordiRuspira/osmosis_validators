@@ -139,7 +139,7 @@ pio.renderers.default = 'browser'
 
 
 
-API_KEY = "3b5afbf4-3004-433c-9b04-2e867026718b"
+API_KEY = st.secrets["API_KEY"]
  
 def get_base64(bin_file):
     with open(bin_file, 'rb') as f:
