@@ -158,7 +158,7 @@ def set_background(png_file):
     ''' % bin_str
     st.markdown(page_bg_img, unsafe_allow_html=True)
  
-set_background('C:/Users/User/Desktop/Osmosis/sincerely-media-cuEpo721ACY-unsplash.jpg')
+set_background('https://imgur.com/0VAjjnD')
 def querying_pagination(query_string):
     sdk = ShroomDK('3b5afbf4-3004-433c-9b04-2e867026718b')
     
