@@ -27,7 +27,7 @@ im_col1.image(
 
 
 im_col2.image(
-    "https://i.ibb.co/tqy8QcX/regen.jpg" 
+    "https://ibb.co/SJyQwQG" 
 )
  
 st.text("")
