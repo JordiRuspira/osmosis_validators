@@ -123,7 +123,7 @@ def get_query_results(token):
     
     return data
  
-set_background('./sincerely-media-cuEpo721ACY-unsplash.jpg')
+set_background('sincerely-media-cuEpo721ACY-unsplash.jpg')
 
 st.header("") 
 
