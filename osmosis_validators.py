@@ -528,26 +528,23 @@ data0 = get_query_results(token)
 df_delegator_reledlegations_from = pd.DataFrame(data0['results'], columns = ['delegator_address','vote','redelegated_from','redelegaterd_to','redelegated_from_label','redelegated_from_rank','redelegated_to_label','redelegated_to_rank','validator_redelegated_from_vote','valdiator_redelegated_to_vote','total_amount'])    
 
  
-df_delegator_reledlegations_from_2 = df_delegator_reledlegations_from.groupby(by=['redelegated_from_label','validator_redelegated_from_vote']).sum().reset_index(drop=False)
-df_delegator_reledlegations_from_3 = df_delegator_reledlegations_from.groupby(by=['redelegated_from_label','vote']).sum().reset_index(drop=False)
+
+if df_delegator_reledlegations_from.empty:
+    st.markdown("There were no redelegations from the selected validator and proposal ID")
+else: 
+    
+    df_delegator_reledlegations_from_2 = df_delegator_reledlegations_from.groupby(by=['redelegated_from_label','validator_redelegated_from_vote']).sum().reset_index(drop=False)
+    df_delegator_reledlegations_from_3 = df_delegator_reledlegations_from.groupby(by=['redelegated_from_label','vote']).sum().reset_index(drop=False)
 
 
-fig = px.bar(df_delegator_reledlegations_from_2, x='redelegated_from_label', y='total_amount', color='validator_redelegated_from_vote', hover_data = ['total_amount'])
-st.plotly_chart(fig, use_container_width=True)  
+    fig = px.bar(df_delegator_reledlegations_from_2, x='redelegated_from_label', y='total_amount', color='validator_redelegated_from_vote', hover_data = ['total_amount'])
+    st.plotly_chart(fig, use_container_width=True)  
 
 
-fig = px.bar(df_delegator_reledlegations_from_3, x='redelegated_from_label', y='total_amount', color='vote', hover_data = ['total_amount'])
-st.plotly_chart(fig, use_container_width=True)  
+    fig = px.bar(df_delegator_reledlegations_from_3, x='redelegated_from_label', y='total_amount', color='vote', hover_data = ['total_amount'])
+    st.plotly_chart(fig, use_container_width=True)  
 
-st.dataframe(df_delegator_reledlegations_from) 
-
-
-
-
-
-
-
-
+    st.dataframe(df_delegator_reledlegations_from) 
 
 
 
@@ -674,16 +671,22 @@ query = create_query(df_query_4)
 token = query.get('token')
 data0 = get_query_results(token) 
 df_delegator_reledlegations_to = pd.DataFrame(data0['results'], columns = ['delegator_address','vote','redelegated_from','redelegaterd_to','redelegated_from_label','redelegated_from_rank','redelegated_to_label','redelegated_to_rank','validator_redelegated_from_vote','validator_redelegated_to_vote','total_amount'])    
- 
-df_delegator_reledlegations_to_2 = df_delegator_reledlegations_to.groupby(by=['redelegated_to_label','validator_redelegated_to_vote']).sum().reset_index(drop=False)
-df_delegator_reledlegations_to_3 = df_delegator_reledlegations_to.groupby(by=['redelegated_to_label','vote']).sum().reset_index(drop=False)
+  
 
-fig = px.bar(df_delegator_reledlegations_to_2, x='redelegated_to_label', y='total_amount', color='validator_redelegated_to_vote', hover_data = ['total_amount'])
-st.plotly_chart(fig, use_container_width=True)  
-fig = px.bar(df_delegator_reledlegations_to_3, x='redelegated_to_label', y='total_amount', color='vote', hover_data = ['total_amount'])
-st.plotly_chart(fig, use_container_width=True)  
+if df_delegator_reledlegations_to.empty:
+    st.markdown("There were no redelegations to the selected validator and proposal ID")
+else: 
+    
+    
+    df_delegator_reledlegations_to_2 = df_delegator_reledlegations_to.groupby(by=['redelegated_to_label','validator_redelegated_to_vote']).sum().reset_index(drop=False)
+    df_delegator_reledlegations_to_3 = df_delegator_reledlegations_to.groupby(by=['redelegated_to_label','vote']).sum().reset_index(drop=False)
 
-st.dataframe(df_delegator_reledlegations_to) 
+    fig = px.bar(df_delegator_reledlegations_to_2, x='redelegated_to_label', y='total_amount', color='validator_redelegated_to_vote', hover_data = ['total_amount'])
+    st.plotly_chart(fig, use_container_width=True)  
+    fig = px.bar(df_delegator_reledlegations_to_3, x='redelegated_to_label', y='total_amount', color='vote', hover_data = ['total_amount'])
+    st.plotly_chart(fig, use_container_width=True)  
+
+    st.dataframe(df_delegator_reledlegations_to) 
 
 
   
