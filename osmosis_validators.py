@@ -159,29 +159,47 @@ def set_background(png_file):
     st.markdown(page_bg_img, unsafe_allow_html=True)
  
 set_background('https://imgur.com/0VAjjnD')
-def querying_pagination(query_string):
-    sdk = ShroomDK('3b5afbf4-3004-433c-9b04-2e867026718b')
+
+
+TTL_MINUTES = 15
+# return up to 100,000 results per GET request on the query id
+PAGE_SIZE = 100000
+# return results of page 1
+PAGE_NUMBER = 1
     
-    # Query results page by page and saves the results in a list
-    # If nothing is returned then just stop the loop and start adding the data to the dataframe
-    result_list = []
-    for i in range(1,11): # max is a million rows @ 100k per page
-        data=sdk.query(query_string,page_size=100000,page_number=i)
-        if data.run_stats.record_count == 0:  
-            break
-        else:
-            result_list.append(data.records)
+def create_query(SQL_QUERY):
+    r = requests.post(
+            'https://node-api.flipsidecrypto.com/queries', 
+            data=json.dumps({
+                "sql": SQL_QUERY,
+                "ttlMinutes": TTL_MINUTES
+            }),
+            headers={"Accept": "application/json", "Content-Type": "application/json", "x-api-key": API_KEY},
+    )
+    if r.status_code != 200:
+        raise Exception("Error creating query, got response: " + r.text + "with status code: " + str(r.status_code))
         
-    # Loops through the returned results and adds into a pandas dataframe
-    result_df=pd.DataFrame()
-    for idx, each_list in enumerate(result_list):
-        if idx == 0:
-            result_df=pd.json_normalize(each_list)
-        else:
-            result_df=pd.concat([result_df, pd.json_normalize(each_list)])
-
-    return result_df
-
+    return json.loads(r.text)    
+       
+    
+def get_query_results(token):
+    r = requests.get(
+            'https://node-api.flipsidecrypto.com/queries/{token}?pageNumber={page_number}&pageSize={page_size}'.format(
+              token=token,
+              page_number=PAGE_NUMBER,
+              page_size=PAGE_SIZE
+            ),
+            headers={"Accept": "application/json", "Content-Type": "application/json", "x-api-key": API_KEY}
+    )
+    if r.status_code != 200:
+        raise Exception("Error getting query results, got response: " + r.text + "with status code: " + str(r.status_code))
+        
+    data = json.loads(r.text)
+    if data['status'] == 'running':
+        time.sleep(10)
+        return get_query_results(token)
+    
+    return data
 
 
 
@@ -205,7 +223,11 @@ from osmosis.core.fact_governance_votes
 where tx_succeeded = 'TRUE' 
 """
 
-df_proposals_selectbox = querying_pagination(df_query_0)
+query = create_query(df_query_0)
+token = query.get('token')
+data0 = get_query_results(token) 
+df_proposals_selectbox = pd.DataFrame(data0['results'], columns = ['proposal_id']) 
+
 
 proposal_choice = '427'
 proposal_choice = st.selectbox("Select a proposal", options = df_proposals_selectbox['proposal_id'].unique() ) 
@@ -253,7 +275,13 @@ st.text("")
 st.markdown("We can see how validators voted on the selected proposal, ordered by rank and voting option.")
 st.text("")
 
-df_valvote = querying_pagination(df_query_1)
+
+
+
+query = create_query(df_query_1)
+token = query.get('token')
+data0 = get_query_results(token) 
+df_valvote = pd.DataFrame(data0['results'], columns = ['voter','address','proposal_id','description','label','rank'])  
 df_valvote = df_valvote.sort_values(by ='rank', ascending = True)
 
 fig = px.bar(df_valvote, x='label', y='rank', color='description', hover_data = ['description'])
@@ -270,7 +298,10 @@ st.markdown("Next, use the select box below to see insights for your favorite va
 st.text("")
 
 
-df_proposals_selectbox = querying_pagination(df_query_val)
+query = create_query(df_query_val)
+token = query.get('token')
+data0 = get_query_results(token) 
+df_proposals_selectbox = pd.DataFrame(data0['results'], columns = ['address','account_address','label','rank'])   
 validator_choice = 'Stakecito'
 validator_choice = st.selectbox("Select a validator", options = df_proposals_selectbox['label'].unique() ) 
 validator_choice_address = df_proposals_selectbox['address'][df_proposals_selectbox['label'] == str(validator_choice)].to_string(index=False)
@@ -434,7 +465,10 @@ vote
 
 
 
-df_delegator_vote_distribution = querying_pagination(df_query_2)
+query = create_query(df_query_2)
+token = query.get('token')
+data0 = get_query_results(token) 
+df_delegator_vote_distribution = pd.DataFrame(data0['results'], columns = ['validator_cote', 'delegator_vote','num_voters','total_amount'])    
 
 st.dataframe(df_delegator_vote_distribution) 
 
@@ -566,7 +600,13 @@ select * from all_votes_per_proposal_and_validator"""
 
 
 
-df_delegator_reledlegations_from = querying_pagination(df_query_3)
+
+query = create_query(df_query_3)
+token = query.get('token')
+data0 = get_query_results(token) 
+df_delegator_reledlegations_from = pd.DataFrame(data0['results'], columns = ['delegator_address','vote','redelegated_from','redelegaterd_to','redelegated_from_label','redelegated_from_rank','redelegated_to_label','redelegated_to_rank','validator_redelegated_from_vote','valdiator_redelegated_to_vote','total_amount'])    
+
+ 
 df_delegator_reledlegations_from_2 = df_delegator_reledlegations_from.groupby(by=['redelegated_from_label','validator_redelegated_from_vote']).sum().reset_index(drop=False)
 df_delegator_reledlegations_from_3 = df_delegator_reledlegations_from.groupby(by=['redelegated_from_label','vote']).sum().reset_index(drop=False)
 
@@ -709,7 +749,11 @@ select * from all_votes_per_proposal_and_validator"""
 
 
 
-df_delegator_reledlegations_to = querying_pagination(df_query_4)
+query = create_query(df_query_4)
+token = query.get('token')
+data0 = get_query_results(token) 
+df_delegator_reledlegations_to = pd.DataFrame(data0['results'], columns = ['delegator_address','vote','redelegated_from','redelegaterd_to','redelegated_from_label','redelegated_from_rank','redelegated_to_label','redelegated_to_rank','validator_redelegated_from_vote','validator_redelegated_to_vote','total_amount'])    
+ 
 df_delegator_reledlegations_to_2 = df_delegator_reledlegations_to.groupby(by=['redelegated_to_label','validator_redelegated_to_vote']).sum().reset_index(drop=False)
 df_delegator_reledlegations_to_3 = df_delegator_reledlegations_to.groupby(by=['redelegated_to_label','vote']).sum().reset_index(drop=False)
 
@@ -722,4 +766,3 @@ st.dataframe(df_delegator_reledlegations_to)
 
 
   
-
