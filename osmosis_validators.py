@@ -27,7 +27,7 @@ im_col1.image(
 
 
 im_col2.image(
-    "https://ibb.co/SJyQwQG" 
+    "https://i.ibb.co/jJhVvNK/osmo.png" 
 )
  
 st.text("")
@@ -123,7 +123,7 @@ def get_query_results(token):
     
     return data
  
-set_background('./images/sincerely-media-cuEpo721ACY-unsplash.jpg')
+set_background('./sincerely-media-cuEpo721ACY-unsplash.jpg')
 
 st.header("") 
 
