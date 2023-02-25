@@ -19,11 +19,16 @@ st.set_page_config(
 
 
 st.title(":atom_symbol: Osmosis Governance :atom_symbol:")
-im_col1, im_col2 = st.columns(2) 
-im_col1.image(
-    "https://i.ibb.co/jJhVvNK/osmo.png" 
-) 
+ col2, col3 = st.columns(3)
 
+with col1:
+    st.write(' ')
+
+with col2:
+    st.image("https://i.ibb.co/jJhVvNK/osmo.png" )
+
+with col3:
+    st.write(' ')
  
  
 st.text("")
