@@ -19,8 +19,13 @@ st.set_page_config(
 
 
 st.title(":atom_symbol: Osmosis Governance :atom_symbol:")
+im_col1, im_col2 = st.columns(2) 
+im_col1.image(
+    "https://i.ibb.co/jJhVvNK/osmo.png" 
+)
  
-st.image(
+  
+im_col2.image(
     "https://i.ibb.co/5c03xp6/Kurama-A-clandestine-neo-tokyo-lab-holding-a-conference-on-futu-a0889505-d525-4ea6-86ac-94c4633b90d0.png" 
 )
 
